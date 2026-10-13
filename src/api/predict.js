@@ -2,7 +2,7 @@
 
 const predict = async (userInput) => {
     try {
-        const res = await fetch('http://localhost:8000/predict/return', {
+        const res = await fetch('https://ml-capstone-backend.onrender.com/predict/return', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(userInput)

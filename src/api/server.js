@@ -2,7 +2,7 @@
 
 const serverWakeUp = async () => {
     try {
-        const res = await fetch('http://localhost:8000/server/wakeup')
+        const res = await fetch('https://ml-capstone-backend.onrender.com/server/wakeup')
         const result = await res.json()
         return {success:true, message:result}
 
