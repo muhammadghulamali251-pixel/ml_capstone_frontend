@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { TriangleAlert, CheckCircle, BrainCog } from 'lucide-react'
 
@@ -20,7 +20,7 @@ const Predict = () => {
   const [browser, setBrowser] = useState("Chrome");
   const [device, setDevice] = useState("iOS-App");
   const [packaging, setPackaging] = useState("Kraft-Brown");
-
+  const [serverTime, setServerTime] = useState(false);
 
   // Response states
   const [loader, setLoader] = useState(false)
@@ -36,6 +36,10 @@ const Predict = () => {
   const submitHanler = async (e) => {
     e.preventDefault()
     setLoader(true)
+    setServerTime(false)
+    const t = setTimeout(() => {
+      setServerTime(true)
+    }, 5000);
     const payload = {
       cart_value_usd: Number(cartValue),
       discount_pct_applied: Number(discount),
@@ -52,6 +56,11 @@ const Predict = () => {
     }
 
     const result = await predict(payload)
+    console.log(result);
+    
+
+    clearTimeout(t)
+    setServerTime(false)
 
     if (!result.success) {
       setErrorMessage(result.message)
@@ -83,7 +92,6 @@ const Predict = () => {
       setHistory(newList)
       localStorage.setItem('history', JSON.stringify(newList))
       setLoader(false)
-  
     }
 
   }
@@ -105,6 +113,7 @@ const Predict = () => {
     setDevice("iOS-App")
     setPackaging("Kraft-Brown")
   }
+
 
   return (
 
@@ -308,6 +317,9 @@ const Predict = () => {
           onClick={reset}
           className='text-xs py-2 px-4 rounded-md bg-white border border-[#D5D9D2] hover:bg-[#F4F5F2] cursor-pointer'>Reset</button>
           </div>
+          {serverTime && (
+            <small className='text-gray-400'>Taking longer than usual, server is waking up ...</small>
+          )}
         </form>
 
         <div className='self-start w-full md:w-[40%] flex flex-col gap-6 bg-white border border-[#E3E6E0] rounded-xl p-5 min-h-50'>
